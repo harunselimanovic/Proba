@@ -1,0 +1,109 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2 pl-0">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Logo">
+      </div>
+    </div>
+    <div class="col-10 search_settings">
+      <div class="input-group">
+        <input class="form-control border-right-0" [(ngModel)]="userFilter.name" placeholder="Search Library">
+        <span class="input-group-addon bg-white border-left-0"><i class="fa fa-search"></i></span>
+    </div>
+      <div class="settings">
+        <i class="fa fa-cog fa-3x"></i>
+      </div>
+      <div class="profile">
+        <img src="assets/da.jpg" alt="">
+        <h2>Anthony Delmas</h2>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2 list-div pl-0" >
+      <ul class="list">
+        <li><div style="-webkit-mask-box-image:url(assets/img/magazine.png);-moz-mask-box-image:url(assets/img/magazine.png);background-color: gray;"></div> <a href="#">Magazines</a></li>
+        <li><div style="-webkit-mask-box-image:url(assets/img/radio.ico);-moz-mask-box-image:url(assets/img/radio.ico);background-color: gray;" ></div> <a href="#">Radio</a></li>
+        <li><div style="-webkit-mask-box-image:url(assets/img/music.png);-moz-mask-box-image:url(assets/img/music.png);background-color: gray;" ></div><a href="#">Music</a></li>
+        <li><div style="-webkit-mask-box-image:url(assets/img/movies.svg);-moz-mask-box-image:url(assets/img/movies.svg);background-color: gray;" ></div> <a href="#">Movies & TV Series</a></li>
+        <li><div style="-webkit-mask-box-image:url(assets/img/tutorial.png);-moz-mask-box-image:url(assets/img/tutorial.png);background-color: gray;" ></div><a href="#">Tutorials</a></li>
+        <li><div style="-webkit-mask-box-image:url(assets/img/nes.png);-moz-mask-box-image:url(assets/img/nes.png);background-color: gray;" ></div><a href="#">News</a></li>
+        <li><div style="-webkit-mask-box-image:url(assets/img/arrows.svg);-moz-mask-box-image:url(assets/img/arrows.svg);background-color: gray;" ></div><a href="#">Excercise</a></li>
+      </ul>
+    </div>
+    <div class="col-8 main-content">
+      <ul class="provider">
+        <li><a href="#">Provider #1</a></li>
+        <li><a href="#">Provider #2</a></li>
+        <li><a href="#">Provider #3</a></li>
+      </ul>
+      <div class="filter">
+        <select id="userFilter" class="form-control" [(ngModel)]="userFilter.genre">
+          <option [ngValue]="undefined"   selected> Genre</option>
+          <option *ngFor="let genre of Genre" value="{{genre.name}}">{{genre.name}}</option>
+        </select>
+        <select id="userFilter" class="form-control" [(ngModel)]="userFilter.country">
+          <option [ngValue]="undefined"   selected> Country</option>
+          <option *ngFor="let country of Country" value="{{country.name}}">{{country.name}}</option>
+        </select>
+        <select class="form-control" [(ngModel)]="sortBy">
+          <option [ngValue]="undefined"   selected> Sort by</option>
+          <option value="date">Sort by:Newest first</option>
+          <option value="id">Sort by: ID</option>
+          <option value="name">Sort by: Name</option>
+        </select>
+        <span style="float:right;"><p>SELLECT ALL</p> <label class="switch">
+            <input type="checkbox" [(ngModel)]="selectedAll" (change)="selectAll();" >
+            <span class="slider round"></span>
+          </label></span>
+      </div>
+        <div class="FixedHeightContainer">
+          <div class="Content" id="style-2">
+            <div *ngFor="let music of musics | order:sortBy  | filterBy: userFilter " class="container-img" [(ngModel)]="music.selected" (click)="select(music);checkIfAllSelected()" ngDefaultControl>
+              <img src="assets/img/{{ music.img }}"   class="thumbnail image" >
+              <div class="overlay-img" [ngClass]="{'overlay-img-active':music.selected,'overlay-img-active-all':selectedAll}"></div>
+              <div class="text-img" [ngClass]="{'text-img-none':music.selected,'text-img-none-all':selectedAll}"> <i class="fa fa-check fa-2x"></i>Select</div>
+              <div class="text-img-active" [ngClass]="{'text-img-actived':music.selected,'text-img-actived-all':selectedAll}"> <i class="fa fa-check fa-2x"></i>Selected</div>
+            </div>
+            <h4 *ngIf="(musics | filterBy: userFilter).length === 0">No matching elements.</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-2 publish">
+      <h5>Make avalible for:</h5><br>
+      <div class="form-check">
+					<label>
+						<input type="radio" name="radio" checked> <span class="label-text">All Users</span>
+					</label>
+				</div>
+        <div class="form-check">
+					<label>
+						<input type="radio" name="radio" > <span class="label-text">Selected Users</span>
+					</label>
+				</div>
+        <div class="form-check">
+					<label>
+						<input type="radio" name="radio" > <span class="label-text">Users in following location</span>
+					</label>
+				</div>
+        <h5>Expaired on:</h5>
+      <div  class="input-group">
+            <input  class="form-control" type="text" value="{{dateValue|date}}">
+            <span  class="input-group-btn">
+              <button class="btn btn-secondary" (click)="opencal()" type="button"><i aria-hidden="true" class="fa fa-calendar"></i></button>
+            </span>
+      </div>
+      <lc-datepicker [(opened)]="calendarOpened" [config]="config" [(date)]="setDate"></lc-datepicker>
+<br><br>
+        <div class="form-check">
+					<label>
+						<input type="checkbox" name="check" checked> <span class="label-text">Add to recommended</span>
+					</label>
+				</div>
+<br>
+       <a class="btn btn-primary btn-lg" routerLink="/image" routerLinkActive="active">PUBLISH</a>
+    </div>
+
+  </div>
+</div>
